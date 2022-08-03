@@ -1,0 +1,8 @@
+let
+url = "https://api.yext.com/v2/accounts/me/analytics/reports?&v=20220101&api_key=REPLACE_ME_API_KEY",
+header = [#"Content-Type"="application/json",#"Accept"="application/json"],
+body = Text.FromBinary(Json.FromValue([metrics = {"NEW_REVIEWS", "AVERAGE_RATING", "RESPONSE_COUNT", "RESPONSE_RATE", "RESPONSE_TIME", "CUMULATIVE_RATING"}, dimensions = {"RATINGS", "PARTNERS", "ENTITY_IDS", "DAYS"}, filters = [ startDate = #date(Date.Year(Date.From(Date.AddDays(DateTime.LocalNow(),-181))),Date.Month(Date.From(Date.AddDays(DateTime.LocalNow(),-181))),Date.Day(Date.From(Date.AddDays(DateTime.LocalNow(),-9181)))), endDate = #date(Date.Year(Date.From(Date.AddDays(DateTime.LocalNow(),-1))),Date.Month(Date.From(Date.AddDays(DateTime.LocalNow(),-1))),Date.Day(Date.From(Date.AddDays(DateTime.LocalNow(),-1))))]])),
+
+Source = Json.Document(Web.Contents(url,[Headers = header,Content=Text.ToBinary(body)]))
+in
+Source
